@@ -2,10 +2,13 @@ from flask import Flask, request, jsonify
 import requests
 from bs4 import BeautifulSoup
 import telegram
+from fake_useragent import UserAgent
 import asyncio
 import os
 from http import HTTPStatus
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -16,6 +19,7 @@ KEY_TEXT = "Przyjmowanie zgłoszeń na złożenie wniosku o pobyt czasowy wstrzy
 # Telegram Bot 設置
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+WEB_UNLOCKER_API_TOKEN = os.getenv('WEB_UNLOCKER_API_TOKEN')
 
 async def send_telegram_message(message):
     """透過 Telegram Bot 發送通知"""
@@ -37,11 +41,21 @@ def scrape_website():
     time_str = now.strftime("%H:%M")
 
     try:
-        # 發送 HTTP 請求
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        payload = {
+            'url': URL,  # 替換為你的目標網站
+            "zone": "my_poland_ip",
+            'headers': {'User-Agent': UserAgent().random},
+            'format': 'raw',
+            'country': 'pl'  # 波蘭定位
         }
-        response = requests.get(URL, headers=headers, timeout=10)
+        headers = {
+            "Authorization": f'Bearer {WEB_UNLOCKER_API_TOKEN}',
+            "Content-Type": "application/json"
+        }
+
+        response = requests.post("https://api.brightdata.com/request", json=payload, headers=headers, timeout=10)
+
+        # response = requests.get(URL, headers=headers, timeout=10)
         response.raise_for_status()
         response.encoding = response.apparent_encoding  # 自動偵測正確編碼
 
