@@ -1,0 +1,10 @@
+name: Trigger Vercel API
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call API
+        run: curl -X POST https://d3-trc-bot.vercel.app//api/scraper

@@ -9,11 +9,5 @@
       "src": "/api/scraper",
       "dest": "api/scraper.py"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/scraper",
-      "schedule": "0 * * * *"
-    }
   ]
 }
