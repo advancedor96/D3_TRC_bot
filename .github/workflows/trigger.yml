@@ -2,6 +2,7 @@ name: 定時爬蟲
 on:
   schedule:
     - cron: '* 15 * * *'
+    - cron: '* 17 * * *'
     - cron: '0,30 16-23 * * *'
   workflow_dispatch:        # 也可以手動觸發
 jobs:
