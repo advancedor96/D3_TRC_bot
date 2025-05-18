@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "api/scraper.py": {
+      "runtime": "python@3.11"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/scraper",
+      "dest": "api/scraper.py"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/scraper",
+      "schedule": "*/30 * * * *"
+    }
+  ]
+}
