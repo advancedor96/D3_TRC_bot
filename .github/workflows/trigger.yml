@@ -1,4 +1,4 @@
-name: Trigger Vercel API
+name: 定時爬蟲
 on:
   schedule:
     - cron: '*/30 * * * *'
