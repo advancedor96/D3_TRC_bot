@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify
 import requests
 from bs4 import BeautifulSoup
 import telegram
@@ -5,6 +6,8 @@ import asyncio
 import os
 from http import HTTPStatus
 from datetime import datetime, timedelta, timezone
+
+app = Flask(__name__)
 
 # 目標網頁
 URL = "https://pobyt-czasowy-zapis-na-zlozenie-wniosku.mazowieckie.pl/"
@@ -59,18 +62,11 @@ def scrape_website():
         return {"status": "error", "message": message}
 
 # Vercel Serverless Function
-def handler(request):
-    """Vercel 無伺服器函數入口"""
+@app.route("/api/scraper", methods=["GET", "POST"])
+def scraper_api():
     result = scrape_website()
     asyncio.run(send_telegram_message(result["message"]))
-
-    # loop = asyncio.get_event_loop()
-    # loop.run_until_complete(send_telegram_message(result["message"]))
-
-    return {
-        "statusCode": 200,
-        "body": result["message"]
-    }
+    return jsonify(result)
 
 if __name__ == "__main__":
     # 本地測試
