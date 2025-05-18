@@ -60,10 +60,11 @@ def scrape_website():
 # Vercel Serverless Function
 def handler(request):
     """Vercel 無伺服器函數入口"""
-    loop = asyncio.get_event_loop()
     result = scrape_website()
+    asyncio.run(send_telegram_message(result["message"]))
 
-    loop.run_until_complete(send_telegram_message(result["message"]))
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(send_telegram_message(result["message"]))
 
     return {
         "statusCode": HTTPStatus.OK,
