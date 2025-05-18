@@ -1,7 +1,8 @@
 name: 定時爬蟲
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '45-59/2 14 * * *'
+    - cron: '0,30 * * * *'
   workflow_dispatch:        # 也可以手動觸發
 jobs:
   run-scraper:
