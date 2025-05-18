@@ -29,6 +29,10 @@ async def send_telegram_message(message):
 
 def scrape_website():
     """爬取網頁並檢查關鍵文字"""
+    # 取得 +2 時區現在時間
+    now = datetime.now(timezone.utc) + timedelta(hours=2)
+    time_str = now.strftime("%H:%M")
+
     try:
         # 發送 HTTP 請求
         headers = {
@@ -42,9 +46,6 @@ def scrape_website():
         soup = BeautifulSoup(response.text, "html.parser")
         page_text = soup.get_text()
 
-        # 取得 +2 時區現在時間
-        now = datetime.now(timezone.utc) + timedelta(hours=2)
-        time_str = now.strftime("%H:%M")
 
         # 檢查關鍵文字是否存在
         if KEY_TEXT in page_text:
@@ -67,7 +68,7 @@ def handler(request):
     # loop.run_until_complete(send_telegram_message(result["message"]))
 
     return {
-        "statusCode": HTTPStatus.OK,
+        "statusCode": 200,
         "body": result["message"]
     }
 
