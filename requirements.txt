@@ -3,3 +3,4 @@ beautifulsoup4==4.12.3
 python-telegram-bot==21.5
 fake-useragent==1.5.1
 flask
+python-dotenv
